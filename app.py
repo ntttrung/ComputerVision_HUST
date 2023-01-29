@@ -6,9 +6,10 @@ import json
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-
+from typing import Optional
 import warnings
 warnings.filterwarnings("ignore")
+
 
 api = FastAPI(title="Final project CV", version='0.2.0')
 origins = ["*"]
@@ -25,10 +26,12 @@ class Input(BaseModel):
     base64_img: Optional[str] = None
     text: Optional[str] = None
     list_base64: Optional[list] = None
+    path: Optional[str] = None
 
 
 @api.post('/Counting-object')
 def Count_object(api_input: Input):
-    img_object = base64.b64decode(api_input.base64_img)
-    image = cv2.imdecode(np.fromstring(img_object, np.uint8), cv2.IMREAD_COLOR)
+    img_path = api_input.path
+    
+    return {'status': 200}
     

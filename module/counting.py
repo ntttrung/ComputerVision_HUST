@@ -64,18 +64,18 @@ class Counting:
         self.create_folder(self.path_out)
 
         # Read original image
-        img = cv2.imread(self.path_in)
-        cv2.imshow("Denoise image",img)
+        # img = cv2.imread(self.path_in)
+        # cv2.imshow("Denoise image",img)
 
-        h_img, w_img = self.get_shape(img)
+        # h_img, w_img = self.get_shape(img)
 
-        # Apply adaptive thresholding
-        adaptive_img = self.apply_adaptive_threshold(img)
-        cv2.imshow("Applying adaptive thresholding",adaptive_img)
+        # # Apply adaptive thresholding
+        # adaptive_img = self.apply_adaptive_threshold(img)
+        # cv2.imshow("Applying adaptive thresholding",adaptive_img)
 
-        # Apply opening operation
-        opening_img = self.apply_opening(adaptive_img)
-        cv2.imshow("Applying opening operation",opening_img)
+        # # Apply opening operation
+        # opening_img = self.apply_opening(adaptive_img)
+        # cv2.imshow("Applying opening operation",opening_img)
 
         # Getting contours
         extracted_contours = self.extract_contour(opening_img)
@@ -128,10 +128,10 @@ class Counting:
 
 
         # Showing final result
-        cv2.imshow("Contour and Counting",img)
+        # cv2.imshow("Contour and Counting",img)
         
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+        # cv2.waitKey(0)
+        # cv2.destroyAllWindows()
 
         print("The total number of objects is: " + str(len(extracted_contours))) 
 

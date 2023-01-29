@@ -43,7 +43,7 @@ class Denoise:
         
         # Reading input image
         img = cv2.imread(self.path_in)
-        cv2.imshow("Original image",img)
+        # cv2.imshow("Original image",img)
 
         # Filter noise and convert to gray image
         median = cv2.medianBlur(img,5)
