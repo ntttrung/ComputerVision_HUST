@@ -39,7 +39,7 @@ class Denoise:
         # Get path_out for image to save
         name_list = self.path_in.split("/")
         name_png = name_list[-1]
-        path_out_png = self.path_out + "/" + name_png
+        path_out_png = '/media/Z/TrungNT108/ComputerVision_HUST/processed_image' + "/" + name_png
         
         # Reading input image
         img = cv2.imread(self.path_in)
@@ -87,11 +87,8 @@ class Denoise:
         
         plt.imsave(path_out_png, img_back, cmap='gray')
         
+        return path_out_png
+        
 
-denoise_test = Denoise("imgs/noise_periodic.png")
-# denoise_test = Denoise("imgs/noise_pepper.png")
-# denoise_test = Denoise("imgs/noise_connected.png")
-# denoise_test = Denoise("imgs/normal.png")
-denoise_test.denoise()
 
 

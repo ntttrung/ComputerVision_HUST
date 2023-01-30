@@ -1,12 +1,13 @@
 import os
 import numpy as np
 import cv2
-
+import datetime
 class Counting:
-    def __init__(self, path_in, path_out, opening_sign):
+    def __init__(self, path_in, opening_sign):
+
         self.opening_sign = opening_sign
         self.path_in = path_in
-        self.path_out = path_out
+        self.path_out = '/media/Z/TrungNT108/ComputerVision_HUST/processed_image'
 
     def create_folder(self, path_out):
         if not os.path.exists(path_out):
@@ -55,27 +56,27 @@ class Counting:
         # Saving
         name_list = self.path_in.split("/")
         name_png = name_list[-1]
-        path_out_png = self.path_out + "/" + name_png
+        path_out_png = self.path_out + "/" + str(datetime.datetime.now().timestamp()) + name_png
         cv2.imwrite(path_out_png, img)
+        return path_out_png
 
 
     def counting_object(self):
         # Create destination folder
         self.create_folder(self.path_out)
 
-        # Read original image
-        # img = cv2.imread(self.path_in)
-        # cv2.imshow("Denoise image",img)
+        img = cv2.imread(self.path_in)
 
-        # h_img, w_img = self.get_shape(img)
+        h_img, w_img = self.get_shape(img)
 
         # # Apply adaptive thresholding
-        # adaptive_img = self.apply_adaptive_threshold(img)
+        adaptive_img = self.apply_adaptive_threshold(img)
+        path_adaptive = self.saving(adaptive_img)
         # cv2.imshow("Applying adaptive thresholding",adaptive_img)
 
         # # Apply opening operation
-        # opening_img = self.apply_opening(adaptive_img)
-        # cv2.imshow("Applying opening operation",opening_img)
+        opening_img = self.apply_opening(adaptive_img)
+        path_opening = self.saving(opening_img)
 
         # Getting contours
         extracted_contours = self.extract_contour(opening_img)
@@ -104,43 +105,8 @@ class Counting:
                 # Small rectangle
                 img = cv2.drawContours(img,[box],0,(0,255,255),2)
 
-            # img_copy = adaptive_img[y:y+h,x:x+w]
-            # kernelSize = (5, 5)
-            # kernel = cv2.getStructuringElement(cv2.MORPH_RECT, kernelSize)
-            # img_copy = cv2.morphologyEx(img_copy, cv2.MORPH_OPEN, kernel)
-            # adaptive_img[y:y+h,x:x+w] = img_copy
-
-            # area = cv2.contourArea(box)
-            # print(area)
-
-        # cv2.imshow("Applying adaptive thresholding part 2",adaptive_img)
-
-        # Visualize text
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        position_1 = (w_img-40, h_img-25)
-        position_2 = (w_img-35, h_img-10)
-        fontScale  = 0.5
-        fontColor  = (0,0,255)
-        thickness  = 2
-
-        cv2.putText(img,'Total', position_1, font, fontScale, fontColor, thickness)
-        cv2.putText(img,str(len(extracted_contours)), position_2, font, fontScale, fontColor, thickness)
-
-
-        # Showing final result
-        # cv2.imshow("Contour and Counting",img)
-        
-        # cv2.waitKey(0)
-        # cv2.destroyAllWindows()
-
-        print("The total number of objects is: " + str(len(extracted_contours))) 
-
-        # Saving
-        self.saving(img)
-
-
-# counting_test = Counting('denoise/noise_periodic.png', 'out', 1)
-# counting_test = Counting('denoise/noise_pepper.png', 'out', 1)
-# counting_test = Counting('denoise/noise_connected.png', 'out', 0)
-# counting_test = Counting('denoise/normal.png', 'out', 1)
-# counting_test.counting_object()
+        return { 'denoise_image': self.path_in,
+            "path_adaptive": path_adaptive,
+            'path_opening': path_opening,
+            'output_image': self.saving(img),
+            'total_contours': len(extracted_contours)}

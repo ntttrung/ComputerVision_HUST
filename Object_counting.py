@@ -18,7 +18,7 @@ def save_uploaded_file(path, uploadfile):
 if active_tab == "1. Object Counting":
     st.title('Object counting')
     uploaded_file = st.file_uploader('Upload a photo', type=['jpg', 'jpeg', 'png', 'webp'])
-    col1, col2 = st.columns([3, 2])
+    col1, col2 = st.columns([3, 3])
     if uploaded_file is not None:
         bytes_data = uploaded_file.getvalue()
         
@@ -30,7 +30,8 @@ if active_tab == "1. Object Counting":
                     name = '.'.join(uploaded_file.name.split('.')[:-1])
                     name += "_" + str(ts) + '.png'
                     uploaded_file.name = name
-                    save_uploaded_file('/media/Z/TrungNT108/ComputerVision_HUST/upload_image', uploaded_file)
+                    path_upload = '/media/Z/TrungNT108/ComputerVision_HUST/upload_image'
+                    save_uploaded_file(path_upload, uploaded_file)
                     
                     # st.balloons()
                     url = 'http://0.0.0.0:8008/Counting-object'
@@ -38,13 +39,30 @@ if active_tab == "1. Object Counting":
                     response = requests.post(url=url, data=json.dumps(data))
                     content = json.loads(response.content)
                     # img_path = content['path_image']
+                    #Original image
+                    org_img = Image.open(path_upload + '/' + name)
+                    st.image(org_img, caption= 'Original image')
+                    
+                    #Denoise image
+                    denoise_img = Image.open(content['denoise_image'])
+                    st.image(denoise_img, caption= 'Denoise image')
+                    
+                    #Adaptive iamge
+                    adapt_img = Image.open(content['path_adaptive'])
+                    st.image(adapt_img, caption= 'Applying adaptive thresholding')
+
+                    #Opening iamge
+                    open_img = Image.open(content['path_opening'])
+                    st.image(open_img, caption= 'Applying opening')
                 # except:
                 #     st.write('Fetch api failed')
         with col2:
             if is_click:
                 st.write('Results:')
-                st.write('The image has 100 objects')
+                st.write('The image has {} objects'.format(content['total_contours']))
 
+                final_img = Image.open(content['output_image'])
+                st.image(final_img, caption= 'Contour and Counting')
 
 
 

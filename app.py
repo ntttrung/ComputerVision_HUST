@@ -31,7 +31,16 @@ class Input(BaseModel):
 
 @api.post('/Counting-object')
 def Count_object(api_input: Input):
-    img_path = api_input.path
+    path_in = "/media/Z/TrungNT108/ComputerVision_HUST/upload_image/" + api_input.path
     
-    return {'status': 200}
+    # Denoise
+    denoise_operation = denoise.Denoise(path_in)
+    path_denoise = denoise_operation.denoise()
+    
+    # Counting operation
+    counting_operation = counting.Counting(path_denoise, 1)
+    result = counting_operation.counting_object()
+
+    
+    return result
     
