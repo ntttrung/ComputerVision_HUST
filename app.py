@@ -43,4 +43,8 @@ def Count_object(api_input: Input):
 
     
     return result
+
+
+@api.post('/Image-retrieval')
+def Count_object(api_input: Input):
     

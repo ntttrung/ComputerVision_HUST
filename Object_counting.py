@@ -69,3 +69,4 @@ if active_tab == "1. Object Counting":
 
 if active_tab == "2. Image Retrieval":
     st.title('Image retrieval using global feature')
+    #to_do

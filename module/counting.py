@@ -23,9 +23,11 @@ class Counting:
     def apply_adaptive_threshold(self, img):
         gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         thresh_adaptive = 180
-        kernelSize = 25
+        kernelSize = 27
         C = -10
         img_adapt_thresh = cv2.adaptiveThreshold(gray,thresh_adaptive,cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY,kernelSize, C)
+        # img_adapt_thresh = cv2.adaptiveThreshold(gray,255,cv2.ADAPTIVE_THRESH_GAUSSIAN_C,\
+        #     cv2.THRESH_BINARY,11,2)
         return img_adapt_thresh
 
     def apply_opening(self, img):
