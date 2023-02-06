@@ -10,9 +10,6 @@ class Counting:
         self.path_in = path_in
         self.opening_sign = opening_sign
 
-    def get_shape(self, img):
-        return img.shape[0], img.shape[1]
-
     def create_path_out(self):
         if not os.path.exists(self._path_out):
             os.mkdir(self._path_out)
